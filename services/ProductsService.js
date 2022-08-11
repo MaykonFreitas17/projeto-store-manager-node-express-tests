@@ -6,9 +6,14 @@ const getAll = async () => {
 };
 
 const getById = async (id) => {
-  const product = await ProductsModel.getById(id);
-  if (product.length === 0) return { status: 404, message: 'Product not found' };
-  return product;
+  try {
+    const product = await ProductsModel.getById(id);
+    console.log(product);
+    if (product.length === 0) return false;
+    return product[0];
+  } catch (err) {
+    return { status: 500, message: err.message };
+  } 
 };
 
 module.exports = {
