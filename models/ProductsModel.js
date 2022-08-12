@@ -15,7 +15,7 @@ const getById = async (id) => {
   return response;
 };
 
-const create = async ({ name }) => {
+const create = async (name) => {
   const [response] = await connection.execute(
     'INSERT INTO StoreManager.products (name) VALUES (?)',
     [name],

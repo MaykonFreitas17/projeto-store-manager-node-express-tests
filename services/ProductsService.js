@@ -11,10 +11,10 @@ const getById = async (id) => {
   return product[0];
 };
 
-const create = async ({ name }) => {
+const create = async (name) => {
   if (name === undefined || name === '') return false;
-  const product = await ProductsModel.create({ name });
-  return product[0];
+  const { insertId } = await ProductsModel.create(name);
+  return { id: insertId, name };
 };
 
 module.exports = {
