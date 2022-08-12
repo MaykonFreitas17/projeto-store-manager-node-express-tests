@@ -154,7 +154,8 @@ describe('Ao chamar as funções do ProductsController', () => {
         res.status = sinon.stub().returns(res);
         res.json = sinon.stub().returns();
 
-        sinon.stub(ProductsService, 'create').resolves(false);
+        sinon.stub(ProductsService, 'create')
+          .resolves({ code: 400, message: '"name" is required' });
       })
 
       after(async () => { ProductsService.create.restore() });
@@ -170,27 +171,32 @@ describe('Ao chamar as funções do ProductsController', () => {
       });
     });
 
-    // describe('Produto não é cadastrado com sucesso - nome com menos de 5 caracteres', () => {
-    //   it('Retornar um status 422', async () => {
-    //     const req = {};
-    //     const res = {};
-    //     await ProductsController.create(req, res);
-    //     expect(res.status.calledWith(422)).to.be.true;
-    //   });
+    describe('Produto não é cadastrado com sucesso - nome não é definido', () => {
+      const res = {};
+      const req = {};
 
-    //   it('Retornar um json com objeto com a propriedade MESSAGE', async () => {
-    //     const req = {};
-    //     const res = {};
-    //     await ProductsController.create(req, res);
-    //     expect(res.json).to.have.property('message');
-    //   });
+      const message = '"name" length must be at least 5 characters long';
 
-    //   it('Retornar um json com a mensagem "name length must be at least 5 characters long"', async () => {
-    //     const req = {};
-    //     const res = {};
-    //     await ProductsController.create(req, res);
-    //     expect(res.json.message).to.be.equal('name length must be at least 5 characters long');
-    //   });
-    // });
+      before(async () => {
+        req.body = sinon.stub().returns();
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        sinon.stub(ProductsService, 'create')
+          .resolves({ code: 422, message });
+      })
+
+      after(async () => { ProductsService.create.restore() });
+
+      it('Retornar um status 422', async () => {
+        await ProductsController.create(req, res);
+        expect(res.status.calledWith(422)).to.be.true;
+      });
+
+      it('Retornar um json com objeto com a propriedade MESSAGE', async () => {
+        await ProductsController.create(req, res);
+        expect(res.json.calledWith({ message })).to.be.true;
+      });
+    });
   });
 });
