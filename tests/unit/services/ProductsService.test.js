@@ -90,6 +90,17 @@ describe('Ao chamar as funções do ProductsService', () => {
 
   describe('Cadastrando um nome Produto', () => {
     describe('Passando um nome válido', () => {
+      before(async () => {
+        const product = [
+          { id: 1, name: 'Martelo de Thor' },
+        ];
+        sinon.stub(ProductsModel, 'create').resolves(product);
+      });
+
+      after(async () => {
+        ProductsModel.create.restore();
+      });
+
       it('Retorna um Objeto', async () => {
         const response = await ProductsService.create({ name: 'Armadura do Homem de Ferro' });
         expect(response).to.be.a('object');
@@ -105,12 +116,28 @@ describe('Ao chamar as funções do ProductsService', () => {
     });
 
     describe('Passando um nome inválido', () => {
-      it('Retorna um booleano', async () => {
-        const response = await ProductsService.create({ name: 'Armadura do Homem de Ferro' });
+      // before(async () => {
+      //   const product = [];
+      //   sinon.stub(ProductsModel, 'create').resolves(product);
+      // });
+
+      // after(async () => {
+      //   ProductsModel.create.restore();
+      // });
+      it('Retorna um booleano se o nome for uma string vazia', async () => {
+        const response = await ProductsService.create({ name: '' });
         expect(response).to.be.a('boolean');
       });
-      it('Retorna um booleano com FALSE', async () => {
-        const response = await ProductsService.create({ name: 'Armadura do Homem de Ferro' });
+      it('Retorna um booleano com FALSE se o nome for uma string vazia', async () => {
+        const response = await ProductsService.create({ name: '' });
+        expect(response).to.be.false;
+      });
+      it('Retorna um booleano se o nome não for definida', async () => {
+        const response = await ProductsService.create({ });
+        expect(response).to.be.a('boolean');
+      });
+      it('Retorna um booleano com FALSE se o nome não for definida', async () => {
+        const response = await ProductsService.create({ });
         expect(response).to.be.false;
       });
     });
