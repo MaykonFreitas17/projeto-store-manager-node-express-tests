@@ -116,30 +116,30 @@ describe('Ao chamar as funções do ProductsService', () => {
     });
 
     describe('Passando um nome inválido', () => {
-      // before(async () => {
-      //   const product = [];
-      //   sinon.stub(ProductsModel, 'create').resolves(product);
-      // });
+      before(async () => {
+        const product = [];
+        sinon.stub(ProductsModel, 'create').resolves(product);
+      });
 
-      // after(async () => {
-      //   ProductsModel.create.restore();
-      // });
+      after(async () => {
+        ProductsModel.create.restore();
+      });
       it('Retorna um booleano se o nome for uma string vazia', async () => {
-        const response = await ProductsService.create({ name: '' });
+        const response = await ProductsService.create('');
         expect(response).to.be.a('boolean');
       });
       it('Retorna um booleano com FALSE se o nome for uma string vazia', async () => {
-        const response = await ProductsService.create({ name: '' });
+        const response = await ProductsService.create('');
         expect(response).to.be.false;
       });
-      it('Retorna um booleano se o nome não for definida', async () => {
-        const response = await ProductsService.create({ });
-        expect(response).to.be.a('boolean');
-      });
-      it('Retorna um booleano com FALSE se o nome não for definida', async () => {
-        const response = await ProductsService.create({ });
-        expect(response).to.be.false;
-      });
+      // it('Retorna um booleano se o nome não for definida', async () => {
+      //   const response = await ProductsService.create({ });
+      //   expect(response).to.be.a('boolean');
+      // });
+      // it('Retorna um booleano com FALSE se o nome não for definida', async () => {
+      //   const response = await ProductsService.create({ });
+      //   expect(response).to.be.false;
+      // });
     });
   });
 
