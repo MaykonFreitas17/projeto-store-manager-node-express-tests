@@ -7,7 +7,7 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-const productsRoutes = require('./middlewares/productsRoutes');
+const productsRoutes = require('./routes/productsRoutes');
 
 app.use('/products', productsRoutes);
 
