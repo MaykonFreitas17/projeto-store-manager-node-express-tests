@@ -71,20 +71,30 @@ describe('Ao chamar as funções do ProductsModel', () => {
 
   describe('Cadastrando um nome produto', () => {
     describe('Produto cadastrado com sucesso', () => { 
-      it('Retorna um objeto como resposta', () => {
-        const response = ProductsModel.create({ name: 'Armadura do Homem de Ferro' });
+      before(async () => {
+        const product = [{ id: 4, name: 'Armadura do Homem de Ferro' }];
+        sinon.stub(connection, 'execute').resolves(product);
+      });
+
+      after(async () => {
+        connection.execute.restore();
+      });
+
+      it('Retorna um objeto como resposta', async () => {
+        const response =  await ProductsModel.create({ name: 'Armadura do Homem de Ferro' });
+        console.log(response);
         expect(response).to.be.a('object');
       });
-      it('Retorna um objeto com um ID', () => {
-        const response = ProductsModel.create({ name: 'Armadura do Homem de Ferro' });
+      it('Retorna um objeto com um ID', async () => {
+        const response =  await ProductsModel.create({ name: 'Armadura do Homem de Ferro' });
         expect(response).to.have.property('id');
       });
-      it('Retorna um objeto com um NAME', () => {
-        const response = ProductsModel.create({ name: 'Armadura do Homem de Ferro' });
+      it('Retorna um objeto com um NAME', async () => {
+        const response =  await ProductsModel.create({ name: 'Armadura do Homem de Ferro' });
         expect(response).to.have.property('name');
       });
-      it('Retorna um objeto com um NAME igual a "Armadura do Homem de Ferro"', () => {
-        const response = ProductsModel.create({ name: 'Armadura do Homem de Ferro' });
+      it('Retorna um objeto com um NAME igual a "Armadura do Homem de Ferro"', async () => {
+        const response =  await ProductsModel.create({ name: 'Armadura do Homem de Ferro' });
         expect(response.name).to.be.equals('Armadura do Homem de Ferro');
       });
     });
