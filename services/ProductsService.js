@@ -1,5 +1,7 @@
 const ProductsModel = require('../models/ProductsModel');
 
+const ProductValidate = require('../middlewares/productValidator');
+
 const getAll = async () => { 
   const products = await ProductsModel.getAll();
   return products;
@@ -12,7 +14,11 @@ const getById = async (id) => {
 };
 
 const create = async (name) => {
-  if (name === undefined || name === '') return false;
+  const validate = ProductValidate.createAndUpdate(name);
+  const { code, message } = validate;
+  if (code && message) {
+    return { code, message };
+  }
   const { insertId } = await ProductsModel.create(name);
   return { id: insertId, name };
 };

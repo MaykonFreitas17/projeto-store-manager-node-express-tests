@@ -27,8 +27,9 @@ const create = async (req, res) => {
   try {
     const { name } = req.body;
     const product = await ProductsService.create(name);
-    if (!product) {
-      return res.status(400).json({ message: '"name" is required' });
+    const { code, message } = product;
+    if (code && message) {
+      return res.status(code).json({ message });
     }
     return res.status(201).json(product);
   } catch (err) {
