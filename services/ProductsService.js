@@ -6,14 +6,9 @@ const getAll = async () => {
 };
 
 const getById = async (id) => {
-  try {
-    const product = await ProductsModel.getById(id);
-    console.log(product);
-    if (product.length === 0) return false;
-    return product[0];
-  } catch (err) {
-    return { status: 500, message: err.message };
-  } 
+  const product = await ProductsModel.getById(id);
+  if (product.length === 0) return false;
+  return product[0];
 };
 
 module.exports = {

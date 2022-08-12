@@ -43,9 +43,7 @@ describe('Testando os ações dos Produtos - Service', () => {
   describe('Buscando um produtos cadastrado por ID', () => {
     describe('Buscando por um produto existente no banco de dados', () => {
       before(async () => {
-        const product = [
-          { id: 1, name: 'Martelo de Thor' },
-        ];
+        const product = [{ id: 1, name: 'Martelo de Thor' }];
         sinon.stub(ProductsModel, 'getById').resolves(product);
       });
 
@@ -55,16 +53,16 @@ describe('Testando os ações dos Produtos - Service', () => {
 
       it('Retorna um objeto', async () => {
         const response = await ProductsService.getById(1);
-        expect(response[0]).to.be.a('object');
+        expect(response).to.be.a('object');
       });
       it('Retorna um objeto com "ID" e "NAME"', async () => {
         const response = await ProductsService.getById(1);
-        expect(response[0]).to.have.property('id');
-        expect(response[0]).to.have.property('name');
+        expect(response).to.have.property('id');
+        expect(response).to.have.property('name');
       });
       it('Retorna um objeto com "ID" igual a 1', async () => {
         const response = await ProductsService.getById(1);
-        expect(response[0].id).to.be.equals(1);
+        expect(response.id).to.be.equals(1);
       });
     });
 
@@ -78,25 +76,14 @@ describe('Testando os ações dos Produtos - Service', () => {
         ProductsModel.getById.restore();
       });
 
-      it('Retorna um objeto', async () => {
-        const response = await ProductsService.getById(1);
-        expect(response).to.be.a('object');
+      it('Retorna um booleano', async () => {
+        const response = await ProductsService.getById(4);
+        expect(response).to.be.a('boolean');
       });
 
-      it('Retorna um objeto com "STATUS" e "MESSAGE"', async () => {
-        const response = await ProductsService.getById(1);
-        expect(response).to.have.property('status');
-        expect(response).to.have.property('message');
-      });
-
-      it('Retorna um objeto com "STATUS" igual a 404', async () => {
-        const response = await ProductsService.getById(1);
-        expect(response.status).to.be.equals(404);
-      });
-
-      it('Retorna um objeto com "MESSAGE" igual a "Product not found"', async () => {
-        const response = await ProductsService.getById(1);
-        expect(response.message).to.be.equals('Product not found');
+      it('Retorna um false', async () => {
+        const response = await ProductsService.getById(4);
+        expect(response).to.be.false;
       });
     });
   });
