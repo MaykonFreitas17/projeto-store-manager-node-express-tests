@@ -112,4 +112,68 @@ describe('Ao chamar as funções do ProductsController', () => {
       })
     });
   });
+
+  describe('Ao chamar a função create', () => {
+    describe('Produto cadastrado com sucesso', () => {
+      it('Retornar um status 201', async () => {
+        const req = {};
+        const res = {};
+        await ProductsController.create(req, res);
+        expect(res.status.calledWith(201)).to.be.true;
+      });
+
+      it('Retornar um json com o produto cadastro', async () => {
+        const req = {};
+        const res = {};
+        await ProductsController.create(req, res);
+        expect(res.json.calledWith({ id: 4, name: 'Armadura do Homem de Ferro' })).to.be.true;
+      });
+    });
+
+    describe('Produto não é cadastrado com sucesso - nome inválido', () => {
+      it('Retornar um status 400', async () => {
+        const req = {};
+        const res = {};
+        await ProductsController.create(req, res);
+        expect(res.status.calledWith(400)).to.be.true;
+      });
+
+      it('Retornar um json com objeto com a propriedade MESSAGE', async () => {
+        const req = {};
+        const res = {};
+        await ProductsController.create(req, res);
+        expect(res.json).to.have.property('message');
+      });
+
+      it('Retornar um json com a mensagem "name is required"', async () => {
+        const req = {};
+        const res = {};
+        await ProductsController.create(req, res);
+        expect(res.json.message).to.be.equal('name is required');
+      });
+    });
+
+    describe('Produto não é cadastrado com sucesso - nome com menos de 5 caracteres', () => {
+      it('Retornar um status 422', async () => {
+        const req = {};
+        const res = {};
+        await ProductsController.create(req, res);
+        expect(res.status.calledWith(422)).to.be.true;
+      });
+
+      it('Retornar um json com objeto com a propriedade MESSAGE', async () => {
+        const req = {};
+        const res = {};
+        await ProductsController.create(req, res);
+        expect(res.json).to.have.property('message');
+      });
+
+      it('Retornar um json com a mensagem "name length must be at least 5 characters long"', async () => {
+        const req = {};
+        const res = {};
+        await ProductsController.create(req, res);
+        expect(res.json.message).to.be.equal('name length must be at least 5 characters long');
+      });
+    });
+  });
 });
