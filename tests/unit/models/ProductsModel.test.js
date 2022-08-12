@@ -82,7 +82,6 @@ describe('Ao chamar as funções do ProductsModel', () => {
 
       it('Retorna um objeto como resposta', async () => {
         const response =  await ProductsModel.create({ name: 'Armadura do Homem de Ferro' });
-        console.log(response);
         expect(response).to.be.a('object');
       });
       it('Retorna um objeto com um ID', async () => {

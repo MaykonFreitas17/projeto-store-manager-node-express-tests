@@ -88,4 +88,32 @@ describe('Ao chamar as funções do ProductsService', () => {
     });
   });
 
+  describe('Cadastrando um nome Produto', () => {
+    describe('Passando um nome válido', () => {
+      it('Retorna um Objeto', async () => {
+        const response = await ProductsService.create({ name: 'Armadura do Homem de Ferro' });
+        expect(response).to.be.a('object');
+      });
+      it('Retorna um Objeto com ID', async () => {
+        const response = await ProductsService.create({ name: 'Armadura do Homem de Ferro' });
+        expect(response).to.have.property('id');
+      });
+      it('Retorna um Objeto com NAME', async () => {
+        const response = await ProductsService.create({ name: 'Armadura do Homem de Ferro' });
+        expect(response).to.have.property('name');
+      });
+    });
+
+    describe('Passando um nome inválido', () => {
+      it('Retorna um booleano', async () => {
+        const response = await ProductsService.create({ name: 'Armadura do Homem de Ferro' });
+        expect(response).to.be.a('boolean');
+      });
+      it('Retorna um booleano com FALSE', async () => {
+        const response = await ProductsService.create({ name: 'Armadura do Homem de Ferro' });
+        expect(response).to.be.false;
+      });
+    });
+  });
+
 });
