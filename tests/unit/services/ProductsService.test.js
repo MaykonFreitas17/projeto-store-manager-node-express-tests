@@ -5,7 +5,7 @@ const ProductsModel = require('../../../models/ProductsModel');
 const ProductsService = require('../../../services/ProductsService');
 
 
-describe('Testando os ações dos Produtos - Service', () => {
+describe('Ao chamar as funções do ProductsService', () => {
 
   describe('Buscando todos os produtos cadastrados', () => {
     before(async () => {
