@@ -4,7 +4,6 @@ const { expect } = require('chai');
 const connection = require('../../../models/connection');
 const ProductsModel = require('../../../models/ProductsModel');
 
-
 describe('Ao chamar as funções do ProductsModel', () => {
 
   describe('Buscando todos os produtos cadastrados', () => {
@@ -67,6 +66,27 @@ describe('Ao chamar as funções do ProductsModel', () => {
     it('retorna um produtos com name igual a "Martelo de Thor"', async () => {
       const response = await ProductsModel.getById(1);
       expect(response.name).to.be.equals('Martelo de Thor');
+    });
+  });
+
+  describe('Cadastrando um nome produto', () => {
+    describe('Produto cadastrado com sucesso', () => { 
+      it('Retorna um objeto como resposta', () => {
+        const response = ProductsModel.create({ name: 'Armadura do Homem de Ferro' });
+        expect(response).to.be.a('object');
+      });
+      it('Retorna um objeto com um ID', () => {
+        const response = ProductsModel.create({ name: 'Armadura do Homem de Ferro' });
+        expect(response).to.have.property('id');
+      });
+      it('Retorna um objeto com um NAME', () => {
+        const response = ProductsModel.create({ name: 'Armadura do Homem de Ferro' });
+        expect(response).to.have.property('name');
+      });
+      it('Retorna um objeto com um NAME igual a "Armadura do Homem de Ferro"', () => {
+        const response = ProductsModel.create({ name: 'Armadura do Homem de Ferro' });
+        expect(response.name).to.be.equals('Armadura do Homem de Ferro');
+      });
     });
   });
 
