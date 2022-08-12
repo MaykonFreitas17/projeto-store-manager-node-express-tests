@@ -12,8 +12,8 @@ const getById = async (id) => {
 };
 
 const create = async ({ name }) => {
-  const product = await ProductsModel.getById({ name });
-  if (product.length === 0) return false;
+  if (name === undefined || name === '') return false;
+  const product = await ProductsModel.create({ name });
   return product[0];
 };
 
