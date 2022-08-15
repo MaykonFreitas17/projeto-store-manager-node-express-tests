@@ -353,4 +353,61 @@ describe('Ao chamar as funções do ProductsController', () => {
       });
     });
   });
+
+  describe('Ao chamar a função exclude', () => {
+    describe('Produto excluido com sucesso', () => {
+      const req = {};
+      const res = {};
+
+      before(async () => {
+        req.params = sinon.stub().returns(1)
+        res.status = sinon.stub().returns(res);
+        res.end = sinon.stub().returns();
+
+        sinon.stub(ProductsService, 'exclude').resolves(true);
+      })
+
+      after(async () => {
+        ProductsService.exclude.restore();
+      });
+
+      it('Retorna um status com valor 204', async () => {
+        await ProductsController.exclude(req, res);
+        expect(res.status.calledWith(204)).to.be.true;
+      });
+      it('A função end é chamada', async () => {
+        await ProductsController.exclude(req, res);
+        expect(res.end.called).to.be.true;
+      });
+    });
+
+    describe('Produto não excluido com sucesso', () => {
+      const req = {};
+      const res = {};
+
+      before(async () => {
+        req.params = sinon.stub().returns(5)
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        sinon.stub(ProductsService, 'exclude').resolves({
+          code: 404,
+          message: 'Product not found',
+        });
+      })
+
+      after(async () => {
+        ProductsService.exclude.restore();
+      });
+
+      it('Retorna um status com valor 404', async () => {
+        await ProductsController.exclude(req, res);
+        expect(res.status.calledWith(404)).to.be.true;
+      });
+      it('Retorna um json com a mensagem de erro "Product not found"', async () => {
+        await ProductsController.exclude(req, res);
+        expect(res.json.calledWith({ message: 'Product not found'})).to.be.true;
+      });
+    });
+  });
 });
