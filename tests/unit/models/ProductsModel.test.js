@@ -99,4 +99,27 @@ describe('Ao chamar as funções do ProductsModel', () => {
     });
   });
 
+  describe('Atualizando um produto', () => {
+    describe('Produto atualizado com sucesso', () => {
+      it('Retorna um objeto', async () => {
+        const id = 1;
+        const newName = 'Martelo do Batman';
+        const response = await ProductsModel.update(id, newName);
+        expect(response).to.be.a('object');
+      });
+      it('Retorna um objeto com a propriedade "ID"', async () => {
+        const id = 1;
+        const newName = 'Martelo do Batman';
+        const response = await ProductsModel.update(id, newName);
+        expect(response).to.have.property('id');
+      });
+      it('Retorna um objeto com a propriedade "NAME"', async () => {
+        const id = 1;
+        const newName = 'Martelo do Batman';
+        const response = await ProductsModel.update(id, newName);
+        expect(response).to.have.property('name');
+      });
+    });
+  });
+
 });
