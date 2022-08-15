@@ -34,7 +34,7 @@ const update = async (id, name) => {
     return { code, message };
   }
   const product = await ProductsModel.update(name);
-  return product;
+  return product[0];
 };
 
 module.exports = {
