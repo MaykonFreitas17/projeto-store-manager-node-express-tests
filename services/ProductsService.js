@@ -33,8 +33,8 @@ const update = async (id, name) => {
   if (code && message) {
     return { code, message };
   }
-  const product = await ProductsModel.update(name);
-  return product[0];
+  await ProductsModel.update(id, name);
+  return { id: Number(id), name };
 };
 
 module.exports = {

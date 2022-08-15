@@ -23,10 +23,10 @@ const create = async (name) => {
   return response;
 };
 
-const update = async (id, newName) => {
+const update = async (id, name) => {
   const [response] = await connection.execute(
-    'UPDATE StoreManager.products SET name = ? WHERE id = ?)',
-    [id, newName],
+    'UPDATE StoreManager.products SET name = ? WHERE id = ?',
+    [name, id],
   );
   return response;
 };
