@@ -199,4 +199,76 @@ describe('Ao chamar as funções do ProductsController', () => {
       });
     });
   });
+
+  describe('Ao chamar a função update', () => {
+    describe('Produto atualizado com sucesso', () => {
+      const req = {};
+      const res = {};
+      it('Retorna um status com o valor de 200', async () => {
+        await ProductsController.update(req, res);
+        expect(res.status.calledWith(200)).to.be.true;
+      });
+      it('Retorna um json com o produto atualizado', async () => {
+        await ProductsController.update(req, res);
+        const product = { id: 1, name: 'Martelo do Batman' }
+        expect(res.json.calledWith(product)).to.be.true;
+      });
+    });
+
+    describe('Produto não atualizado com sucesso - Produto não encontrado', () => {
+      const req = {};
+      const res = {};
+      it('Retorna um status com o valor de 404', async () => {
+        await ProductsController.update(req, res);
+        expect(res.status.calledWith(404)).to.be.true;
+      });
+      it('Retorna um json com o propriedade message com o erro "Product not found"', async () => {
+        await ProductsController.update(req, res);
+        const error = { message: 'Product not found' };
+        expect(res.json.calledWith(error)).to.be.true;
+      });
+    });
+
+    describe('Produto não atualizado com sucesso - Nome Não definido', () => {
+      const req = {};
+      const res = {};
+      it('Retorna um status com o valor de 400', async () => {
+        await ProductsController.update(req, res);
+        expect(res.status.calledWith(400)).to.be.true;
+      });
+      it('Retorna um json com o propriedade message com o erro "name is required"', async () => {
+        await ProductsController.update(req, res);
+        const error = { message: '"name" is required' };
+        expect(res.json.calledWith(error)).to.be.true;
+      });
+    });
+
+    describe('Produto não atualizado com sucesso - Nome com string vazia', () => {
+      const req = {};
+      const res = {};
+      it('Retorna um status com o valor de 400', async () => {
+        await ProductsController.update(req, res);
+        expect(res.status.calledWith(400)).to.be.true;
+      });
+      it('Retorna um json com o propriedade message com o erro "name is required"', async () => {
+        await ProductsController.update(req, res);
+        const error = { message: '"name" is required' };
+        expect(res.json.calledWith(error)).to.be.true;
+      });
+    });
+
+    describe('Produto não atualizado com sucesso - Nome menor que 5 caracteres', () => {
+      const req = {};
+      const res = {};
+      it('Retorna um status com o valor de 422', async () => {
+        await ProductsController.update(req, res);
+        expect(res.status.calledWith(422)).to.be.true;
+      });
+      it('Retorna um json com o propriedade message com o erro "name length must be at least 5 characters long"', async () => {
+        await ProductsController.update(req, res);
+        const error = { message: '"name" length must be at least 5 characters long' };
+        expect(res.json.calledWith(error)).to.be.true;
+      });
+    });
+  });
 });
