@@ -204,6 +204,20 @@ describe('Ao chamar as funções do ProductsController', () => {
     describe('Produto atualizado com sucesso', () => {
       const req = {};
       const res = {};
+
+      before(async () => {
+        req.params = sinon.stub().returns(1)
+        req.body = sinon.stub().returns('Martelo do Batman');
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        sinon.stub(ProductsService, 'update').resolves({ id: 1, name: 'Martelo do Batman' });
+      })
+
+      after(async () => {
+        ProductsService.update.restore();
+      });
+
       it('Retorna um status com o valor de 200', async () => {
         await ProductsController.update(req, res);
         expect(res.status.calledWith(200)).to.be.true;
@@ -218,6 +232,23 @@ describe('Ao chamar as funções do ProductsController', () => {
     describe('Produto não atualizado com sucesso - Produto não encontrado', () => {
       const req = {};
       const res = {};
+
+      before(async () => {
+        req.params = sinon.stub().returns(5)
+        req.body = sinon.stub().returns('Martelo do Batman');
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        sinon.stub(ProductsService, 'update').resolves({
+          code: 404,
+          message: 'Product not found',
+        });
+      })
+
+      after(async () => {
+        ProductsService.update.restore();
+      });
+
       it('Retorna um status com o valor de 404', async () => {
         await ProductsController.update(req, res);
         expect(res.status.calledWith(404)).to.be.true;
@@ -232,6 +263,23 @@ describe('Ao chamar as funções do ProductsController', () => {
     describe('Produto não atualizado com sucesso - Nome Não definido', () => {
       const req = {};
       const res = {};
+
+      before(async () => {
+        req.params = sinon.stub().returns(5)
+        req.body = sinon.stub().returns();
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        sinon.stub(ProductsService, 'update').resolves({
+          code: 400,
+          message: '"name" is required',
+        });
+      })
+
+      after(async () => {
+        ProductsService.update.restore();
+      });
+
       it('Retorna um status com o valor de 400', async () => {
         await ProductsController.update(req, res);
         expect(res.status.calledWith(400)).to.be.true;
@@ -246,6 +294,23 @@ describe('Ao chamar as funções do ProductsController', () => {
     describe('Produto não atualizado com sucesso - Nome com string vazia', () => {
       const req = {};
       const res = {};
+
+      before(async () => {
+        req.params = sinon.stub().returns(5)
+        req.body = sinon.stub().returns('');
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        sinon.stub(ProductsService, 'update').resolves({
+          code: 400,
+          message: '"name" is required',
+        });
+      })
+
+      after(async () => {
+        ProductsService.update.restore();
+      });
+
       it('Retorna um status com o valor de 400', async () => {
         await ProductsController.update(req, res);
         expect(res.status.calledWith(400)).to.be.true;
@@ -260,6 +325,23 @@ describe('Ao chamar as funções do ProductsController', () => {
     describe('Produto não atualizado com sucesso - Nome menor que 5 caracteres', () => {
       const req = {};
       const res = {};
+
+      before(async () => {
+        req.params = sinon.stub().returns(5)
+        req.body = sinon.stub().returns();
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        sinon.stub(ProductsService, 'update').resolves({
+          code: 422,
+          message: '"name" length must be at least 5 characters long',
+        });
+      })
+
+      after(async () => {
+        ProductsService.update.restore();
+      });
+
       it('Retorna um status com o valor de 422', async () => {
         await ProductsController.update(req, res);
         expect(res.status.calledWith(422)).to.be.true;
