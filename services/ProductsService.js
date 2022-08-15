@@ -37,9 +37,18 @@ const update = async (id, name) => {
   return { id: Number(id), name };
 };
 
+const exclude = async (id) => {
+  // Validadando o ID
+  const productByID = await ProductsModel.getById(id);
+  if (productByID.length === 0) return { code: 404, message: 'Product not found' };
+  await ProductsModel.exclude(id);
+  return true;
+};
+
 module.exports = {
   getAll,
   getById,
   create,
   update,
+  exclude,
 };

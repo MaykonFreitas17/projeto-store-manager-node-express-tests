@@ -228,5 +228,65 @@ describe('Ao chamar as funções do ProductsService', () => {
       });
     });
   })
+  
+  describe('Deletando um produto', () => {
+    describe('Produto deletado com sucesso', () => {
+      before(async () => {
+        const product = [];
+        sinon.stub(ProductsModel, 'exclude').resolves(product);
+      });
 
+      after(async () => {
+        ProductsModel.exclude.restore();
+      });
+
+      it('Retorna um Booleano', async () => {
+        const id = 1;
+        const response = await ProductsService.exclude(id);
+        expect(response).to.be.a('boolean');
+      });
+      it('Retorna um Booleano com valor TRUE', async () => {
+        const id = 1;
+        const response = await ProductsService.exclude(id);
+        expect(response).to.be.true;
+      });
+    });
+    describe('Produto não deletado com sucesso', () => {
+      before(async () => {
+        const product = [];
+        sinon.stub(ProductsModel, 'exclude').resolves(product);
+      });
+
+      after(async () => {
+        ProductsModel.exclude.restore();
+      });
+
+      it('Retorna um objeto', async () => {
+        const id = 5;
+        const response = await ProductsService.exclude(id);
+        expect(response).to.be.a('object');
+      });
+      it('Retorna um objeto com a propriedade "CODE"', async () => {
+        const id = 5;
+        const response = await ProductsService.exclude(id);
+        expect(response).to.have.property('code');
+      });
+      it('Retorna um objeto com a propriedade "MESSAGE"', async () => {
+        const id = 5;
+        const response = await ProductsService.exclude(id);
+        expect(response).to.have.property('message');
+      });
+      it('Retorna um code com valor 404 caso o produto não exista', async () => {
+        const id = 5;
+        const response = await ProductsService.exclude(id);
+        expect(response.code).to.equals(404);
+      });
+      it('Retorna uma mensagem com o valor "Product not found"', async () => {
+        const id = 5;
+        const response = await ProductsService.exclude(id);
+        const message = 'Product not found';
+        expect(response.message).to.equals(message);
+      });
+    });
+  });
 });
