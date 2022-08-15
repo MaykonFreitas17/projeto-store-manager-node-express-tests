@@ -88,7 +88,7 @@ describe('Ao chamar as funções do ProductsService', () => {
     });
   });
 
-  describe('Cadastrando um nome Produto', () => {
+  describe('Cadastrando um novo Produto', () => {
     describe('Passando um nome válido', () => {
       before(async () => {
         const product = [
@@ -151,5 +151,61 @@ describe('Ao chamar as funções do ProductsService', () => {
       });
     });
   });
+
+  describe('Atualizando produtos', () => {
+    describe('Atualizando produtos com SUCESSO', () => {
+      it('retorna um objeto', async () => {
+        const id = 1;
+        const newName = 'Martelo do Batman';
+        const response = await ProductsService.update(id, newName);
+        expect(response).to.be.a('object');
+      });
+      it('retorna um objeto com a propriedade "ID"', async () => {
+        const id = 1;
+        const newName = 'Martelo do Batman';
+        const response = await ProductsService.update(id, newName);
+        expect(response).to.have.property('id');
+      });
+      it('retorna um objeto com a propriedade "name"', async () => {
+        const id = 1;
+        const newName = 'Martelo do Batman';
+        const response = await ProductsService.update(id, newName);
+        expect(response).to.have.property('name');
+      });
+    });
+
+    describe('Atualizando produtos sem SUCESSO', () => {
+      it('retorna um produtos', async () => {
+        const id = 1;
+        const newName = 'Martelo do Batman';
+        const response = await ProductsService.update(id, newName);
+        expect(response).to.be.a('object');
+      });
+      it('retorna um produtos com a propriedade "CODE"', async () => {
+        const id = 1;
+        const newName = 'Martelo do Batman';
+        const response = await ProductsService.update(id, newName);
+        expect(response).to.have.property('code');
+      });
+      it('retorna um produtos com a propriedade "MESSAGE"', async () => {
+        const id = 1;
+        const newName = 'Martelo do Batman';
+        const response = await ProductsService.update(id, newName);
+        expect(response).to.have.property('message');
+      });
+      it('retorna um code com valor "400" quando o name não for definindo ou se for vazio', async () => {
+        const id = 1;
+        const newName = 'Martelo do Batman';
+        const response = await ProductsService.update(id, newName);
+        expect(response.code).to.equals(400);
+      });
+      it('retorna um code com valor "422" quando o name for menor que 5 caracteres', async () => {
+        const id = 1;
+        const newName = 'Martelo do Batman';
+        const response = await ProductsService.update(id, newName);
+        expect(response.code).to.equals(422);
+      });
+    });
+  })
 
 });
