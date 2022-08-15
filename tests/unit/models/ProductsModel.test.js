@@ -101,6 +101,17 @@ describe('Ao chamar as funções do ProductsModel', () => {
 
   describe('Atualizando um produto', () => {
     describe('Produto atualizado com sucesso', () => {
+      before(async () => {
+        const id = 1;
+        const name = 'Martelo do Batman';
+        const product = [{ id, name }];
+        sinon.stub(connection, 'execute').resolves(product);
+      });
+
+      after(async () => {
+        connection.execute.restore();
+      });
+      
       it('Retorna um objeto', async () => {
         const id = 1;
         const newName = 'Martelo do Batman';
