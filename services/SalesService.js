@@ -1,4 +1,5 @@
 const SalesModel = require('../models/SalesModel');
+const SalesProductsModel = require('../models/SalesProductsModel');
 
 const getAll = async () => {
   const sales = SalesModel.getAll();
@@ -11,7 +12,16 @@ const getById = async (id) => {
   return product;
 };
 
+const exclude = async (id) => {
+  const sale = await SalesModel.getById(id);
+  if (sale.length === 0) return { code: 404, message: 'Sale not found' };
+  await SalesModel.exclude(id);
+  await SalesProductsModel.exclude(id);
+  return true;
+};
+
 module.exports = {
   getAll,
   getById,
+  exclude,
 };

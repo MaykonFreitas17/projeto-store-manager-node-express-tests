@@ -50,7 +50,7 @@ const getById = async (id) => {
 
 const exclude = async (id) => {
   const [response] = await connection.execute(
-    'DELETE FROM sale WHERE id = ?',
+    'DELETE FROM StoreManager.sales WHERE id = ?',
     [id],
   );
   return response;
