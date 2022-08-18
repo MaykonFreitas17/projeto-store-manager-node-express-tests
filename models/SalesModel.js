@@ -7,6 +7,12 @@ const serialize = (sales) => ({
   quantity: sales.quantity,
 });
 
+const serializeForGetById = (sales) => ({
+  date: sales.date,
+  productId: sales.product_id,
+  quantity: sales.quantity,
+});
+
 const create = async () => {
   const [response] = await connection.execute(
     'INSERT INTO StoreManager.sales (date) VALUES (NOW())',
@@ -34,12 +40,12 @@ const getById = async (id) => {
     FROM StoreManager.sales AS sale
     INNER JOIN StoreManager.sales_products AS sale_product
     ON sale.id = sale_product.sale_id
-    ORDER BY sale.id ASC, sale_product.product_id
     WHERE sale.id = ?
+    ORDER BY sale.id ASC, sale_product.product_id
   `,
     [id],
   );
-  return response.map(serialize);
+  return response.map(serializeForGetById);
 };
 
 module.exports = {
