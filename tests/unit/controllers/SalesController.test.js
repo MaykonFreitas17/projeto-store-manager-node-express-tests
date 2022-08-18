@@ -119,3 +119,63 @@ describe('Ao listar uma venda pelo o seu "ID" - SalesController', () => {
     });
   });
 });
+
+describe('Ao Deletar uma venda - SalesController', () => {
+  describe('Ao deletar uma venda com SUCESSO', () => {
+    const req = {};
+    const res = {};
+
+    before(async () => {
+      req.params = sinon.stub().returns(1);
+      res.status = sinon.stub().returns(res);
+      res.end = sinon.stub().returns();
+
+      sinon.stub(SalesService, 'exclude').resolves(true);
+    })
+
+    after(async () => {
+      SalesService.exclude.restore();
+    });
+
+    it('Retorna um status com valor 204', async () => {
+      await SalesController.exclude(req, res);
+      expect(res.status.calledWith(204)).to.be.true;
+    });
+    it('A função end é chamada', async () => {
+      await SalesController.exclude(req, res);
+      expect(res.end.called).to.be.true;
+    });
+  });
+
+  describe('Ao tentar deletar uma venda inexistente', () => {
+    const req = {};
+    const res = {};
+
+    const error = { message: 'Sale not found' };
+
+    before(async () => {
+      req.params = sinon.stub().returns(5);
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      sinon.stub(SalesService, 'exclude').resolves({
+        code: 404,
+        message: error,
+      });
+    })
+
+    after(async () => {
+      SalesService.exclude.restore();
+    });
+
+    it('Retornar um status 404', async () => {
+      await SalesController.exclude(req, res);
+      expect(res.status.calledWith(404)).to.be.true;
+    });
+
+    it('Retornar um json com uma messagem de erro "Sale not found"', async () => {
+      await SalesController.exclude(req, res);
+      expect(res.json.calledWith({ message: error })).to.be.true;
+    });
+  });
+});
