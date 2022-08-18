@@ -48,8 +48,17 @@ const getById = async (id) => {
   return response.map(serializeForGetById);
 };
 
+const exclude = async (id) => {
+  const [response] = await connection.execute(
+    'DELETE FROM sale WHERE id = ?',
+    [id],
+  );
+  return response;
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  exclude,
 };

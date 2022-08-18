@@ -122,3 +122,39 @@ describe('Ao Listar um venda pelo seu "ID" - SalesModel', () => {
     });
   });
 });
+
+describe('Ao Excluir um venda', () => {
+  before(async () => {
+    const result = [{
+      fieldCount: 0,
+      affectedRows: 1,
+      insertId: 0,
+      info: '',
+      serverStatus: 2,
+      warningStatus: 0
+    }]
+    sinon.stub(connection, 'execute').resolves(result);
+  });
+
+  after(async () => {
+    connection.execute.restore();
+  });
+
+  it('Retorna um objeto', async () => {
+    const id = 1;
+    const response = await SalesModel.exclude(id);
+    expect(response).to.be.a('object');
+  });
+
+  it('Retorna um objeto com affectedRows', async () => {
+    const id = 1;
+    const response = await SalesModel.exclude(id);
+    expect(response).to.have.property('affectedRows');
+  });
+
+  it('Retorna um objeto com affectedRows com o valor 1', async () => {
+    const id = 1;
+    const { affectedRows } = await SalesModel.exclude(id);
+    expect(affectedRows).to.equals(1);
+  });
+});
