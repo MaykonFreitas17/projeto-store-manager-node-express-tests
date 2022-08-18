@@ -86,7 +86,6 @@ describe('Ao atualizar uma venda - SalesProductsModel', () => {
     const productId = 1;
     const quantity = 10;
     const response = await SalesProductsModel.update(id, productId, quantity);
-    console.log(response);
     expect(response).to.be.a('array');
   });
 
