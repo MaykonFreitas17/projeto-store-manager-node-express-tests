@@ -65,3 +65,47 @@ describe('Ao deletar uma venda_produto - SalesProductsModel', () => {
     expect(affectedRows).to.equals(1);
   });
 });
+
+describe('Ao atualizar uma venda - SalesProductsModel', () => {
+  before(async () => {
+    const sales = [
+      [
+        { productId: 1, quantity: 10 },
+        { productId: 2, quantity: 50 },
+      ]
+    ];
+    sinon.stub(connection, 'execute').resolves(sales);
+  });
+
+  after(async () => {
+    connection.execute.restore();
+  });
+
+  it('Retorna uma lista com as vendas atualizadas', async () => {
+    const id = 1;
+    const productId = 1;
+    const quantity = 10;
+    const response = await SalesProductsModel.update(id, productId, quantity);
+    console.log(response);
+    expect(response).to.be.a('array');
+  });
+
+  it('Retorna um objeto com a propriedade "productId"', async () => {
+    const id = 1;
+    const productId = 1;
+    const quantity = 10;
+    const response = await SalesProductsModel.update(id, productId, quantity);
+    response.forEach((sale) => {
+      expect(sale).to.have.property('productId');
+    });
+  });
+  it('Retorna um objeto com a propriedade "QUANTITY"', async () => {
+    const id = 1;
+    const productId = 1;
+    const quantity = 10;
+    const response = await SalesProductsModel.update(id, productId, quantity);
+    response.forEach((sale) => {
+      expect(sale).to.have.property('quantity');
+    });
+  });
+});
