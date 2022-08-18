@@ -58,13 +58,11 @@ describe('Ao listar uma venda pelo o seu "ID"', async () => {
   describe('Ao listar um venda com Sucesso', () => {
     const sales = [
       {
-        saleId: 1,
         date: "2021-09-09T04:54:29.000Z",
         productId: 1,
         quantity: 2
       },
       {
-        saleId: 1,
         date: "2021-09-09T04:54:54.000Z",
         productId: 2,
         quantity: 2
@@ -82,11 +80,6 @@ describe('Ao listar uma venda pelo o seu "ID"', async () => {
     it('Retorna uma lista com as vendas', async () => {
       const response = await SalesService.getById();
       expect(response).to.be.a('array');
-    });
-
-    it('Retorna um lista com vendas com a propriedade "saleId"', async () => {
-      const response = await SalesService.getById();
-      response.forEach((sale) => expect(sale).to.have.property('saleId'));
     });
 
     it('Retorna um lista com vendas com a propriedade "date"', async () => {
