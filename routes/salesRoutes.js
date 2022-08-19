@@ -9,5 +9,6 @@ routes.get('/', SalesController.getAll);
 routes.get('/:id', SalesController.getById);
 routes.post('/', SalesProductsController.create);
 routes.delete('/:id', SalesController.exclude);
+routes.put('/:id', SalesProductsController.update);
 
 module.exports = routes;

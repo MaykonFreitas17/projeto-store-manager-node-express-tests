@@ -1,9 +1,9 @@
 const connection = require('./connection');
 
-const serialize = (sale) => ({
-  productId: sale.product_id,
-  quantity: sale.quantity,
-});
+// const serialize = (sale) => ({
+//   productId: sale.product_id,
+//   quantity: sale.quantity,
+// });
 
 const create = async (saleId, productId, quantity) => {
   const [response] = await connection.execute(
@@ -23,10 +23,10 @@ const exclude = async (id) => {
 
 const update = async (id, productId, quantity) => {
   const [response] = await connection.execute(
-    'UPDATE StoreManager.sales_products SET product_id = ?, quantity = ? WHERE sale_id = ?',
-    [productId, quantity, id],
+    'UPDATE StoreManager.sales_products SET quantity = ? WHERE sale_id = ? AND product_id = ?',
+    [quantity, id, productId],
   );
-  return response.map(serialize);
+  return response;
 };
 
 module.exports = {

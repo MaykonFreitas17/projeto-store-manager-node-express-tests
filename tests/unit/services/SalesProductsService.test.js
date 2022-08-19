@@ -265,10 +265,10 @@ describe('Ao atualizar uma venda - SalesProductsService', () => {
       expect(response).to.be.a('object');
     });
 
-    it('Retorna um objeto com a propriedade "ID"', async () => {
+    it('Retorna um objeto com a propriedade "saleId"', async () => {
       const id = 1;
       const response = await SalesProductsService.update(id, salesProducts);
-      expect(response).to.have.property('id');
+      expect(response).to.have.property('saleId');
     });
 
     it('Retorna um objeto com a propriedade "itemsUpdated"', async () => {
