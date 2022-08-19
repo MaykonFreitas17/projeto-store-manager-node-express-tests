@@ -50,7 +50,6 @@ const getByName = async (name) => {
     const products = await ProductsModel.getAll();
     return products;
   }
-
   const products = await ProductsModel.getByName(name);
   return products;
 };

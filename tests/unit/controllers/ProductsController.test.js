@@ -410,4 +410,92 @@ describe('Ao chamar as funções do ProductsController', () => {
       });
     });
   });
+
+  describe('Ao chamar a função getByName', () => {
+    describe('Busca feita com sucesso', () => {
+      const req = {};
+      const res = {};
+
+      before(async () => {
+        req.query = sinon.stub().returns('Martelo');
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        sinon.stub(ProductsService, 'getByName').resolves([{
+          id: 1,
+          name: 'Martelo de Thor',
+        }]);
+      })
+
+      after(async () => {
+        ProductsService.getByName.restore();
+      });
+
+      it('Retorna um status com valor 200', async () => {
+        await ProductsController.getByName(req, res);
+        expect(res.status.calledWith(200)).to.be.true;
+      });
+      it('A retorna um json com uma lista de produto(s)', async () => {
+        await ProductsController.getByName(req, res);
+        const response = [{
+          id: 1,
+          name: 'Martelo de Thor',
+        }]
+        expect(res.json.calledWith(response)).to.be.true;
+      });
+    });
+
+    describe('Busca feita sem sucesso - Nenhum produto encontrado', () => {
+      const req = {};
+      const res = {};
+
+      before(async () => {
+        req.query = sinon.stub().returns('Espada');
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        sinon.stub(ProductsService, 'getByName').resolves([]);
+      })
+
+      after(async () => {
+        ProductsService.getByName.restore();
+      });
+
+      it('Retorna um status com valor 200', async () => {
+        await ProductsController.getByName(req, res);
+        expect(res.status.calledWith(200)).to.be.true;
+      });
+      it('A retorna um json com uma lista vázia', async () => {
+        await ProductsController.getByName(req, res);
+        const response = [];
+        expect(res.json.calledWith(response)).to.be.true;
+      });
+    });
+
+    describe('Busca feita sem sucesso - Nenhuma busca foi definida', () => {
+      const req = {};
+      const res = {};
+
+      before(async () => {
+        req.query = sinon.stub().returns();
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        sinon.stub(ProductsService, 'getByName').resolves(products);
+      })
+
+      after(async () => {
+        ProductsService.getByName.restore();
+      });
+
+      it('Retorna um status com valor 200', async () => {
+        await ProductsController.getByName(req, res);
+        expect(res.status.calledWith(200)).to.be.true;
+      });
+      it('A retorna um json com uma lista com todos os produtos cadastros', async () => {
+        await ProductsController.getByName(req, res);
+        expect(res.json.calledWith(products)).to.be.true;
+      });
+    });
+  });
 });

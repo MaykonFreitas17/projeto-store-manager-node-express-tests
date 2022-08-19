@@ -41,8 +41,7 @@ const exclude = async (id) => {
 
 const getByName = async (name) => {
   const [response] = await connection.execute(
-    'SELECT (id, name) FROM StoreManager.products WHERE name LIKE "%?%"',
-    [name],
+    `SELECT id, name FROM StoreManager.products WHERE name LIKE "%${name}%"`,
   );
   return response;
 };
