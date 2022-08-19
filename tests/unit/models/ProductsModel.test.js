@@ -168,4 +168,85 @@ describe('Ao chamar as funções do ProductsModel', () => {
       expect(affectedRows).to.equals(1);
     });
   });
+
+  describe('Buscando produtos por nome', () => {
+    describe('Busca feita com sucesso - Achou produtos', () => {
+      before(async () => {
+        const result = [
+          [
+            {
+              id: 1,
+              name: 'Martelo de Thor',
+            }
+          ]
+        ];
+        sinon.stub(connection, 'execute').resolves(result);
+      });
+
+      after(async () => {
+        connection.execute.restore();
+      });
+
+      const products = [
+        {
+          id: 1,
+          name: "Martelo de Thor",
+        }
+      ];
+
+      it('Retornar uma lista de produtos', async () => {
+        const name = 'Martelo';
+        const response = await ProductsModel.getByName(name);
+        expect(response).to.be.a('array');
+      });
+
+      it('Retornar uma lista de produtos com "ID"', async () => {
+        const name = 'Martelo';
+        const response = await ProductsModel.getByName(name);
+        response.forEach((item) => expect(item).to.have.property('id'));
+      });
+
+      it('Retornar uma lista de produtos com "name"', async () => {
+        const name = 'Martelo';
+        const response = await ProductsModel.getByName(name);
+        response.forEach((item) => expect(item).to.have.property('name'));
+      });
+
+      it('Retorna produtos com name que contenham a query de pesquisa no nome', async () => {
+        const name = 'Martelo';
+        const response = await ProductsModel.getByName(name);
+        response.forEach((item) => expect(item.name).to.include(name));
+      });
+    });
+
+    describe('Busca feita sem sucesso - Não achou nenhum produtos', () => {
+      before(async () => {
+        const result = [[]];
+        sinon.stub(connection, 'execute').resolves(result);
+      });
+
+      after(async () => {
+        connection.execute.restore();
+      });
+
+      const products = [
+        {
+          id: 1,
+          name: "Martelo de Thor",
+        }
+      ];
+
+      it('Retornar uma lista', async () => {
+        const name = 'Martelo';
+        const response = await ProductsModel.getByName(name);
+        expect(response).to.be.a('array');
+      });
+
+      it('Retornar uma lista vázia', async () => {
+        const name = 'Martelo';
+        const response = await ProductsModel.getByName(name);
+        expect(response.length).to.equals(0);
+      });
+    });
+  });
 });
