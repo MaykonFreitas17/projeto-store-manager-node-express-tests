@@ -45,10 +45,21 @@ const exclude = async (id) => {
   return true;
 };
 
+const getByName = async (name) => {
+  if (name === undefined || name === '') {
+    const products = await ProductsModel.getAll();
+    return products;
+  }
+
+  const products = await ProductsModel.getByName(name);
+  return products;
+};
+
 module.exports = {
   getAll,
   getById,
   create,
   update,
   exclude,
+  getByName,
 };

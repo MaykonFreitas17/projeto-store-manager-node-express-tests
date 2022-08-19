@@ -289,4 +289,109 @@ describe('Ao chamar as funções do ProductsService', () => {
       });
     });
   });
+
+  describe('Buscando produtos por nome', () => {
+    describe('Busca feita com sucesso', () => {
+      before(async () => {
+        const product = [];
+        sinon.stub(ProductsModel, 'getByName').resolves([
+          {
+            id: 1,
+            name: 'Martelo de Thor',
+          }
+        ]);
+      });
+
+      after(async () => {
+        ProductsModel.getByName.restore();
+      });
+
+      it('Retornar uma lista de produtos', async () => {
+        const name = 'Martelo';
+        const response = await ProductsService.getByName(name);
+        expect(response).to.be.a('array');
+      });
+
+      it('Retornar uma lista de produtos com "ID"', async () => {
+        const name = 'Martelo';
+        const response = await ProductsService.getByName(name);
+        response.forEach((item) => expect(item).to.have.property('id'));
+      });
+
+      it('Retornar uma lista de produtos com "name"', async () => {
+        const name = 'Martelo';
+        const response = await ProductsService.getByName(name);
+        response.forEach((item) => expect(item).to.have.property('name'));
+      });
+
+      it('Retorna produtos com name que contenham a query de pesquisa no nome', async () => {
+        const name = 'Martelo';
+        const response = await ProductsService.getByName(name);
+        response.forEach((item) => expect(item.name).to.include(name));
+      });
+    });
+
+    describe('Busca feita sem sucesso - Não achou nenhum produtos', () => {
+      before(async () => {
+        const product = [];
+        sinon.stub(ProductsModel, 'getByName').resolves([]);
+      });
+
+      after(async () => {
+        ProductsModel.getByName.restore();
+      });
+
+      it('Retornar uma lista', async () => {
+        const name = 'Martelo';
+        const response = await ProductsService.getByName(name);
+        expect(response).to.be.a('array');
+      });
+
+      it('Retornar uma lista vázia', async () => {
+        const name = 'Martelo';
+        const response = await ProductsService.getByName(name);
+        expect(response.length).to.equals(0);
+      });
+    });
+
+    describe('Busca feita sem sucesso - Busca vázia', () => {
+      before(async () => {
+        const allProducts = [
+          { id: 1, name: 'Martelo de Thor' },
+          { id: 2, name: 'Traje de encolhimento' },
+          { id: 3, name: 'Escudo do Capitão América' },
+        ];
+        sinon.stub(ProductsModel, 'getByName').resolves(allProducts);
+      });
+
+      after(async () => {
+        ProductsModel.getByName.restore();
+      });
+
+
+      it('Retornar uma lista', async () => {
+        const name = 'Martelo';
+        const response = await ProductsService.getByName(name);
+        expect(response).to.be.a('array');
+      });
+
+      it('Retornar uma lista de produtos com "ID"', async () => {
+        const name = 'Martelo';
+        const response = await ProductsService.getByName(name);
+        response.forEach((item) => expect(item).to.have.property('id'));
+      });
+
+      it('Retornar uma lista de produtos com "name"', async () => {
+        const name = 'Martelo';
+        const response = await ProductsService.getByName(name);
+        response.forEach((item) => expect(item).to.have.property('name'));
+      });
+
+      it('Retornar uma lista com todos os produtos Cadastro', async () => {
+        const name = 'Martelo';
+        const response = await ProductsService.getByName(name);
+        expect(response.length).to.equals(3);
+      });
+    });
+  });
 });
